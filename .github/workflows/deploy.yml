@@ -1,0 +1,39 @@
+name: Deploy
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - v*
+env:
+  IMAGE_NAME: 'lambda-sharp'
+  PROJECT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+jobs:
+  build-push-docker:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.DEMO_ECR_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.DEMO_ECR_SECRET_KEY }}
+        aws-region: ap-southeast-1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      with:
+        registries: ${{ secrets.AWS_ACCOUNT_ID }}
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}

@@ -20,3 +20,4 @@ RUN dotnet publish "SimpleAPI.csproj" \
 FROM base AS final
 WORKDIR /var/task
 COPY --from=publish /app/publish .
+CMD [ "SimpleAPI::SimpleAPI.LambdaEntryPoint::FunctionHandlerAsync" ]

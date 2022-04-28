@@ -2,8 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
 WORKDIR /app
 COPY . .
 RUN dotnet restore
-RUN dotnet build -c Release --no-restore
-RUN dotnet publish -c Release --no-restore --no-build -o publish
+RUN dotnet build -c Release --no-restore -o build
 
 FROM public.ecr.aws/lambda/dotnet:6
 
@@ -17,4 +16,6 @@ WORKDIR /var/task
 #
 # Alternatively Docker multi-stage build could be used to build the .NET Lambda project inside the image.
 # For more information on this approach checkout the project's README.md file.
-COPY --from=build /app/publish .
+COPY --from=build /app/build .
+
+CMD [ "SimpleAPI::SimpleAPI.LambdaEntryPoint::FunctionHandlerAsync" ]

@@ -21,12 +21,19 @@ EOF
 resource "aws_lambda_function" "lambda_container_demo" {
   function_name = "lambda_container_demo"
   role          = aws_iam_role.iam_for_lambda.arn
-  image_uri     = "092318301320.dkr.ecr.ap-southeast-1.amazonaws.com/lambda-sharp:main"
+  image_uri     = "092318301320.dkr.ecr.ap-southeast-1.amazonaws.com/lambda-sharp:main" # please update with your image
   publish       = true
   package_type  = "Image"
 
   tags = {
     "env" = "dev"
+  }
+
+  environment {
+    variables = {
+      dbUsername = aws_db_instance.lambda_container_demo_prod.username
+      dbEndpoint = aws_db_instance.lambda_container_demo_prod.endpoint
+    }
   }
 }
 
@@ -55,4 +62,30 @@ resource "aws_lambda_function_url" "lambda_container_demo_prod" {
     expose_headers    = ["keep-alive", "date"]
     max_age           = 86400
   }
+}
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+resource "aws_db_instance" "lambda_container_demo_prod" {
+  allocated_storage   = 20
+  identifier          = "db-lambda"
+  engine              = "sqlserver-ex"
+  engine_version      = "15.00.4198.2.v1"
+  instance_class      = "db.t3.small"
+  username            = "ssadmin"
+  password            = random_password.password.result
+  skip_final_snapshot = true
+}
+
+resource "aws_secretsmanager_secret" "lambda_container_demo_prod" {
+  name = "lambda_container_demo_prod"
+}
+
+resource "aws_secretsmanager_secret_version" "lambda_container_demo_prod_db" {
+  secret_id     = aws_secretsmanager_secret.lambda_container_demo_prod.id
+  secret_string = random_password.password.result
 }

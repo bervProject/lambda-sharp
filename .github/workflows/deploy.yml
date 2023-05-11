@@ -11,6 +11,9 @@ env:
 jobs:
   build-push-docker:
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read
     steps:
     - uses: actions/checkout@v3
     - name: Configure AWS credentials

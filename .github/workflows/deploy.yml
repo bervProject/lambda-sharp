@@ -29,7 +29,7 @@ jobs:
         registries: ${{ secrets.AWS_ACCOUNT_ID }}
     - name: Extract metadata (tags, labels) for Docker
       id: meta
-      uses: docker/metadata-action@v3
+      uses: docker/metadata-action@v4
       with:
         images: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}
       env:

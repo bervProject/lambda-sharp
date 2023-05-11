@@ -9,8 +9,21 @@ env:
   IMAGE_NAME: 'lambda-sharp'
   PROJECT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+    - name: .NET Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
   build-push-docker:
     runs-on: ubuntu-22.04
+    if: ${{ github.event_name == 'push' }}
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read

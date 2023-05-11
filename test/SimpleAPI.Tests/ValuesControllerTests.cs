@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Xunit;
-using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
 using Amazon.Lambda.APIGatewayEvents;
 
@@ -16,7 +15,7 @@ public class ValuesControllerTests
         var lambdaFunction = new LambdaEntryPoint();
 
         var requestStr = File.ReadAllText("./SampleRequests/ValuesController-Get.json");
-        var request = JsonSerializer.Deserialize<APIGatewayProxyRequest>(requestStr, new JsonSerializerOptions
+        var request = JsonSerializer.Deserialize<APIGatewayHttpApiV2ProxyRequest>(requestStr, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -25,7 +24,7 @@ public class ValuesControllerTests
 
         Assert.Equal(200, response.StatusCode);
         Assert.Equal("[\"value1\",\"value2\"]", response.Body);
-        Assert.True(response.MultiValueHeaders.ContainsKey("Content-Type"));
-        Assert.Equal("application/json; charset=utf-8", response.MultiValueHeaders["Content-Type"][0]);
+        Assert.True(response.Headers.ContainsKey("Content-Type"));
+        Assert.Equal("application/json; charset=utf-8", response.Headers["Content-Type"]);
     }
 }

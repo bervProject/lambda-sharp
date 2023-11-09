@@ -54,9 +54,37 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-  terraform:
-    name: 'Terraform'
+  terraform-deploy:
+    name: 'Terraform Deploy'
     needs: build-push-docker
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ./terraform
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: ./terraform
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: ./terraform
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve
+  terraform-test:
+    name: 'Terraform Test'
+    needs: build
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -79,7 +107,6 @@ jobs:
         working-directory: ./terraform
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request'
         run: terraform plan -no-color
         continue-on-error: true
         working-directory: ./terraform
@@ -110,7 +137,3 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        working-directory: ./terraform
-        run: terraform apply -auto-approve

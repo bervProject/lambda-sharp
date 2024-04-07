@@ -49,7 +49,7 @@ EOF
 }
 
 resource "aws_lambda_function" "lambda_container_demo" {
-  function_name = "lambda_container_demo"
+  function_name = var.function_name
   role          = aws_iam_role.iam_for_lambda.arn
   image_uri     = var.lambda_image # please update with your image
   publish       = true
@@ -63,7 +63,7 @@ resource "aws_lambda_function" "lambda_container_demo" {
     mode = "Active"
   }
 
-  timeout = 60
+  timeout = var.lambda_timeout
 
 }
 
@@ -83,8 +83,8 @@ resource "aws_lambda_function_url" "lambda_container_demo_dev" {
 resource "aws_dynamodb_table" "lambda_container_demo_dev" {
   name           = "Notes"
   billing_mode   = "PROVISIONED"
-  read_capacity  = 20
-  write_capacity = 20
+  read_capacity  = var.dynamodb_read_capacity
+  write_capacity = var.dynamodb_write_capacity
   hash_key       = "Id"
 
   attribute {
@@ -100,8 +100,8 @@ resource "aws_dynamodb_table" "lambda_container_demo_dev" {
   global_secondary_index {
     name               = "NoteMessageIndex"
     hash_key           = "Message"
-    write_capacity     = 10
-    read_capacity      = 10
+    write_capacity     = var.dynamodb_global_write_capacity
+    read_capacity      = var.dynamodb_global_read_capacity
     projection_type    = "INCLUDE"
     non_key_attributes = ["Id"]
   }

@@ -116,3 +116,18 @@ resource "aws_dynamodb_table" "lambda_container_demo_dev" {
     Environment = "dev"
   }
 }
+
+output "lambda_url" {
+  value = aws_lambda_function_url.lambda_container_demo_dev.function_url
+}
+
+check "health_check" {
+  data "http" "terraform_io" {
+    url = "${output.lambda_url}/api/notes"
+  }
+
+  assert {
+    condition     = data.http.terraform_io.status_code == 200
+    error_message = "${data.http.terraform_io.url} returned an unhealthy status code"
+  }
+}

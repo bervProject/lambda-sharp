@@ -77,6 +77,10 @@ jobs:
         id: validate
         run: terraform validate -no-color
         working-directory: ./terraform
+      - name: Terraform Test
+        id: test
+        run: terraform test
+        working-directory: ./terraform
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'

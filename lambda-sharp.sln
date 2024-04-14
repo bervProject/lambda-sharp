@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleAPI", "SimpleAPI", "{2E234498-6EE8-4B2B-B32A-27AB1BC077DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{598E8886-0B06-41D5-9C01-3051B8140B9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleAPI", "src\SimpleAPI\SimpleAPI.csproj", "{4609928B-A222-40EF-AE6F-D19194D3E612}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2A5F88CD-8FF7-48D1-B824-9813D4857FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleAPI.Tests", "test\SimpleAPI.Tests\SimpleAPI.Tests.csproj", "{42649AD6-E83C-491C-90C1-E81DA72C0907}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4609928B-A222-40EF-AE6F-D19194D3E612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4609928B-A222-40EF-AE6F-D19194D3E612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4609928B-A222-40EF-AE6F-D19194D3E612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4609928B-A222-40EF-AE6F-D19194D3E612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42649AD6-E83C-491C-90C1-E81DA72C0907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42649AD6-E83C-491C-90C1-E81DA72C0907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42649AD6-E83C-491C-90C1-E81DA72C0907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42649AD6-E83C-491C-90C1-E81DA72C0907}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{598E8886-0B06-41D5-9C01-3051B8140B9F} = {2E234498-6EE8-4B2B-B32A-27AB1BC077DB}
+		{4609928B-A222-40EF-AE6F-D19194D3E612} = {598E8886-0B06-41D5-9C01-3051B8140B9F}
+		{2A5F88CD-8FF7-48D1-B824-9813D4857FD7} = {2E234498-6EE8-4B2B-B32A-27AB1BC077DB}
+		{42649AD6-E83C-491C-90C1-E81DA72C0907} = {2A5F88CD-8FF7-48D1-B824-9813D4857FD7}
+	EndGlobalSection
+EndGlobal

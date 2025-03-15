@@ -14,6 +14,6 @@
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.7.1" />
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.1" />
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.405.36" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.406.1" />
   </ItemGroup>
 </Project>

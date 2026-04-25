@@ -10,7 +10,7 @@ env:
   PROJECT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v6
     - name: Setup .NET Core SDK
@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
   build-push-docker:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'push' }}
     permissions:
       id-token: write   # This is required for requesting the JWT
@@ -58,7 +58,7 @@ jobs:
     name: 'Terraform Deploy'
     needs: build-push-docker
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -85,7 +85,7 @@ jobs:
     name: 'Terraform Test'
     needs: build
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
